@@ -1,0 +1,22 @@
+#0 Burger: Hamburger (399)
+#5 Burger: CheeseBurger (200)
+#1 Snack: Fries (189)
+#4 Snack: Drumlets (169)
+#2 Drink: SoftDrink (149)
+#6 Drink: OrangeJuice (209)
+#3 Combo: HappyMeal (687)
+   #0 Burger: Hamburger (399)
+   #1 Snack: Fries (189)
+   #2 Drink: SoftDrink (149)
+
+--- Order ---
+
+#2 Drink: SoftDrink (149)
+#1 Snack: Fries (189)
+#4 Snack: Drumlets (169)
+#3 Combo: HappyMeal (687)
+   #0 Burger: Hamburger (399)
+   #1 Snack: Fries (189)
+   #2 Drink: SoftDrink (149)
+#0 Burger: Hamburger (399)
+Total: 1593
