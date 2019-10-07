@@ -1,0 +1,689 @@
+<h3>CS2030 Lab #4 (Mock Practical Assessment)</h3>
+
+<h4>Topic Coverage</h4>
+<ul>
+<li>Object-oriented design
+<li>Java Collections
+</ul>
+
+<h4>Problem Description</h4>
+
+<p>M<sup>c</sup>AcMe fast-food restaurant serves burgers, snacks and drinks.
+An order comprises of a list of such food items on the menu.
+
+<p>Your task in this assignment comprises of two parts:
+
+<ol>
+<li>Read food items into a menu;
+<li>Take an order based on items on the menu, and work out the price.
+</ol>
+
+<p>A sample input for creating the menu is shown below. Each line begins with <tt>add</tt> followed by the type of food, a one-word description, and the price in cents.  <tt>end</tt> terminates the input.
+
+<pre>
+add Burger Hamburger 399
+add Snack Fries 189
+add Drink SoftDrink 149
+add Snack Drumlets 169
+add Burger CheeseBurger 200
+add Drink OrangeJuice 209
+end
+</pre>
+
+<p>Processing the above creates a Menu as follows:
+
+<pre>
+#0 Burger: Hamburger (399)
+#4 Burger: CheeseBurger (200)
+#1 Snack: Fries (189)
+#3 Snack: Drumlets (169)
+#2 Drink: SoftDrink (149)
+#5 Drink: OrangeJuice (209)
+</pre>
+
+<p>Take note of the following:
+
+<ul>
+<li>Unique and running IDs (starting from <tt>0</tt>) are given to each food item as they are read;
+<li>The menu above is printed with burger items first, followed by snacks, then drinks.
+<li>There will be no duplicate entries and there is no need to perform input validation.
+</ul>
+
+<p>An order comprises a sequence of food IDs.  
+The following shows the same input as above, except that the order is now included.
+
+<pre>
+add Burger Hamburger 399
+add Snack Fries 189
+add Drink SoftDrink 149
+add Snack Drumlets 169
+add Burger CheeseBurger 200
+add Drink OrangeJuice 209
+end
+2 1 4 3
+</pre>
+
+<p>The output generated is shown below:
+<pre>
+#0 Burger: Hamburger (399)
+#4 Burger: CheeseBurger (200)
+#1 Snack: Fries (189)
+#3 Snack: Drumlets (169)
+#2 Drink: SoftDrink (149)
+#5 Drink: OrangeJuice (209)
+--- Order ---
+#2 Drink: SoftDrink (149)
+#1 Snack: Fries (189)
+#4 Burger: CheeseBurger (200)
+#3 Snack: Drumlets (169)
+Total: 707
+</pre>
+
+<p>M<sup>c</sup>AcMe decides to also include Combo meals to its menu.  
+Each Combo meal item comprises a number of items specified by their IDs.
+You may assume that all specified item IDs are valid.
+There is also a <tt>50</tt> cents discount off the entire order.
+<!-- next iteration should pass discount as another argument -->
+The following shows how a <tt>Combo</tt> menu item can be added:
+
+<pre>
+add Combo HappyMeal 0 1 2
+</pre>
+
+<p>You may assume that all Combo menu items are valid.
+<!--
+<p>Any other combinations will invalidate the menu item and ignored.
+-->
+As an example, the following input
+
+<pre>
+add Burger Hamburger 399
+add Snack Fries 189
+add Drink SoftDrink 149
+add Combo HappyMeal 0 1 2
+add Snack Drumlets 169
+add Burger CheeseBurger 200
+add Drink OrangeJuice 209
+end
+2 1 4 3 0
+</pre>
+
+<p>will generate the following output:
+
+<pre>
+#0 Burger: Hamburger (399)
+#5 Burger: CheeseBurger (200)
+#1 Snack: Fries (189)
+#4 Snack: Drumlets (169)
+#2 Drink: SoftDrink (149)
+#6 Drink: OrangeJuice (209)
+#3 Combo: HappyMeal (687)
+   #0 Burger: Hamburger (399)
+   #1 Snack: Fries (189)
+   #2 Drink: SoftDrink (149)
+--- Order ---
+#2 Drink: SoftDrink (149)
+#1 Snack: Fries (189)
+#4 Snack: Drumlets (169)
+#3 Combo: HappyMeal (687)
+   #0 Burger: Hamburger (399)
+   #1 Snack: Fries (189)
+   #2 Drink: SoftDrink (149)
+#0 Burger: Hamburger (399)
+Total: 1593
+</pre>
+
+<p>
+The discounted price is output as part of the Combo menu item (e.g. <tt>687</tt> versus <tt>399 &plus; 189 &plus; 149</tt>).
+<!--
+In addition, invalid Combo meals are output as error messages;
+specifically, the first error is due to the missing item <tt>#2</tt>, while the second error is due to the wrong combination of items making up a Combo meal.
+-->
+
+<p>Take note of the following assumptions:
+
+<ul>
+<li>There is at least one valid item in the menu
+<li>There is at least one valid item in the order, there is no need to perform input validation on items in the order. 
+<li>There is no need to work out whether individually ordered items make up a valid Combo meal
+<!--
+<li>You may assume that there are no more than 20 items on the menu, and the order does not exceed 50 items.
+-->
+</ul>
+
+<p>This task is divided into several levels.
+Read through all the levels 
+to see how the different levels are related.
+<!--
+<b>Find a suitable level to start off.</b>
+-->
+
+<p>Just remember to:
+
+<ul>
+<li>always compile your program files first before using <tt>jshell</tt> to test your program, or running your program with <tt>java</tt>
+<!--
+<li>make use of provided <tt>Main</tt> class with the <tt>main</tt> method that handles input; you should extend this as you progress through the levels
+<li>check for output format correctness using the <tt>diff</tt> utility (see specific level for usage details).  Note that only <b>one</b> test case is provided for this;
+<li>save a copy of all source files into the appropriate level directory (see specific level for usage details); <b>only files from these directories are up-loaded to CodeCrunch</b>.
+-->
+<li><tt>checkstyle</tt> and <tt>javadoc</tt> comments can be included after your programs have been up-loaded to CodeCrunch; you have till Friday midnight to do so.
+<!--
+<ul>
+<li>check for styling errors by invoking <tt>checkstyle</tt>. For example, to check styling for all java files
+<pre>
+$ checkstyle *.java
+</pre>
+</ul>
+-->
+</ul>
+
+<!--
+<b>
+<ul>
+<li>Deadline: Submit your work to CodeCrunch by Thursday, 15 September, 23:59:59.
+</ul>
+</b>
+-->
+
+<p>
+<table border=1 cellpadding=10 width=800>
+
+<tr><td><h4>Level 1</h4>
+
+<p>Define the <tt>Menu</tt> class and create the menu of burger, snack and drink items by calling the <tt>add</tt> method.
+
+<pre>
+$ javac your_java_files
+$ jshell -q your_java_files_in_bottom-up_dependency_order < test1.jsh
+jshell> Menu menu = new Menu();
+jshell> menu.add("Burger","Hamburger",399)
+$.. ==> #0 Burger: Hamburger (399)
+jshell> menu.add("Snack","Fries",189)
+$.. ==> #1 Snack: Fries (189)
+jshell> menu.add("Drink","SoftDrink",149)
+$.. ==> #2 Drink: SoftDrink (149)
+jshell> menu.add("Snack","Drumlets",169)
+$.. ==> #3 Snack: Drumlets (169)
+jshell> menu.add("Burger","CheeseBurger",200)
+$.. ==> #4 Burger: CheeseBurger (200)
+jshell> menu.add("Drink","OrangeJuice",209)
+$.. ==> #5 Drink: OrangeJuice (209)
+jshell> /exit
+</pre>
+</table>
+
+<!--
+<p>Click <a href="https://codecrunch.comp.nus.edu.sg/task_view.php?tid=4187" target="_blank">here</a> 
+to submit to CodeCrunch.
+
+<p>Check the format correctness of the output by typing the following Unix command
+<pre>
+$ java Main &lt; test1.in | diff - test1.out
+</pre>
+
+<p>Make a copy of your Java programs to the level directory by typing the Unix commands
+
+<pre>
+$ mkdir food1
+$ cp *.java food1
+</pre>
+-->
+
+</table>
+
+<table border=1 cellpadding=10 width=800>
+
+<tr><td><h4>Level 2</h4>
+
+<p>Now output the menu grouped by the type of food.  
+The ordering is in terms of the order of presentation of input.
+
+<p>As an example, in the sample test below, a burger is added first, followed by a snack, then a drink.  So burgers are listed, then snacks, then drink.  Within burgers, HamBurger is added before CheeseBurger.
+
+<p>In addition, M<sup>c</sup>AcMe expects to include additional types of food with each food having a fixed price.
+You will need to keep this in mind for ease of future extensions.
+
+<pre>
+$ javac your_java_files
+$ jshell -q your_java_files_in_bottom-up_dependency_order < test2.jsh
+jshell> Menu menu = new Menu()
+jshell> menu.add("Burger","Hamburger",399)
+$.. ==> #0 Burger: Hamburger (399)
+jshell> menu.add("Snack","Fries",189)
+$.. ==> #1 Snack: Fries (189)
+jshell> menu.add("Drink","SoftDrink",149)
+$.. ==> #2 Drink: SoftDrink (149)
+jshell> menu.add("Snack","Drumlets",169)
+$.. ==> #3 Snack: Drumlets (169)
+jshell> menu.add("Burger","CheeseBurger",200)
+$.. ==> #4 Burger: CheeseBurger (200)
+jshell> menu.add("Drink","OrangeJuice",209)
+$.. ==> #5 Drink: OrangeJuice (209)
+jshell> menu.print()
+#0 Burger: Hamburger (399)
+#4 Burger: CheeseBurger (200)
+#1 Snack: Fries (189)
+#3 Snack: Drumlets (169)
+#2 Drink: SoftDrink (149)
+#5 Drink: OrangeJuice (209)
+jshell> /exit
+</pre>
+
+<!--
+<p>Click <a href="https://codecrunch.comp.nus.edu.sg/task_view.php?tid=4188" target="_blank">here</a> 
+to submit to CodeCrunch.
+-->
+
+<p><i>Hint:</i> Find the simplest way to get this done.  <i>You may not want to sort.</i>
+
+<!--
+<p>Check the format correctness of the output by typing the following Unix command
+<pre>
+$ java Main &lt; test2.in | diff - test2.out
+</pre>
+
+<p>Make a copy of your Java programs to the level directory by typing the Unix commands
+
+<pre>
+$ mkdir food2
+$ cp *.java food2
+</pre>
+-->
+
+</table>
+
+<table border=1 cellpadding=10 width=800>
+
+<tr><td><h4>Level 3</h4>
+
+<p>After reading the menu, we can proceed to process and output an order.  
+Each order comprises an array of integer values representing the menu items. 
+There is no need to perform any validation check.
+
+
+<!--
+The following program fragment shows you how the input can be read.
+
+<pre>
+        Scanner sc = new Scanner(System.in);
+
+        while(sc.next().equals("add")) {
+            String type = sc.next();
+            String desc = sc.next();
+            int price = sc.nextInt();
+            System.out.println(type + " " + desc + " " + price);
+        }
+
+        // read order
+        while (sc.hasNext()) {
+           System.out.println(sc.nextInt());
+        }
+</pre>
+-->
+
+<!--
+<p>Take note of the following:
+
+<ul>
+<li>There is no need to perform any validation check.
+<li>Implement ordering properly to avoid further modification in subsequent levels.
+<li>If you are testing the program interactively, use <tt>^D</tt> (Control-d) to terminate the input (see sample run)
+</ul>
+
+<p>The following is a sample run of the program.  User input is <u>underlined</u>.  
+-->
+<!-- Ensure that the last line of output is followed by a newline character. -->
+
+<pre>
+$ javac your_java_files
+$ jshell -q your_java_files_in_bottom-up_dependency_order < test3.jsh
+jshell> Menu menu = new Menu();
+jshell> menu.add("Burger","Hamburger",399)
+$.. ==> #0 Burger: Hamburger (399)
+jshell> menu.add("Snack","Fries",189)
+$.. ==> #1 Snack: Fries (189)
+jshell> menu.add("Drink","SoftDrink",149)
+$.. ==> #2 Drink: SoftDrink (149)
+jshell> menu.add("Snack","Drumlets",169)
+$.. ==> #3 Snack: Drumlets (169)
+jshell> menu.add("Burger","CheeseBurger",200)
+$.. ==> #4 Burger: CheeseBurger (200)
+jshell> menu.add("Drink","OrangeJuice",209)
+$.. ==> #5 Drink: OrangeJuice (209)
+jshell> menu.print()
+#0 Burger: Hamburger (399)
+#4 Burger: CheeseBurger (200)
+#1 Snack: Fries (189)
+#3 Snack: Drumlets (169)
+#2 Drink: SoftDrink (149)
+#5 Drink: OrangeJuice (209)
+jshell> new Order(menu).add(new int[]{2, 1, 4, 3})
+$.. ==> 
+#2 Drink: SoftDrink (149)
+#1 Snack: Fries (189)
+#4 Burger: CheeseBurger (200)
+#3 Snack: Drumlets (169)
+Total: 707
+jshell> /exit
+</pre>
+
+<!--
+<p><table border=1 >
+
+<tr><td><tt>
+<u>add Burger Hamburger 399</u><br>
+<u>add Snack Fries 189</u><br>
+<u>add Drink SoftDrink 149</u><br>
+<u>add Snack Drumlets 169</u><br>
+<u>add Burger CheeseBurger 200</u><br>
+<u>add Drink OrangeJuice 209</u><br>
+<u>end</u><br> 
+#0 Burger: Hamburger (399)<br>
+#4 Burger: CheeseBurger (200)<br>
+#1 Snack: Fries (189)<br>
+#3 Snack: Drumlets (169)<br>
+#2 Drink: SoftDrink (149)<br>
+#5 Drink: OrangeJuice (209)<br>
+<u>2 1 4 3</u><br>
+<u>^D</u><br>
+--- Order ---<br>
+#2 Drink: SoftDrink (149)<br>
+#1 Snack: Fries (189)<br>
+#4 Burger: CheeseBurger (200)<br>
+#3 Snack: Drumlets (169)<br>
+Total: 707<br>
+</tt>
+
+</table>
+
+<p>Click <a href="https://codecrunch.comp.nus.edu.sg/task_view.php?tid=4189" target="_blank">here</a> 
+to submit to CodeCrunch.
+
+<p>Check the format correctness of the output by typing the following Unix command
+<pre>
+$ java Main &lt; test3.in | diff - test3.out
+</pre>
+
+<p>Make a copy of your Java programs to the level directory by typing the Unix commands
+
+<pre>
+$ mkdir food3
+$ cp *.java food3
+</pre>
+-->
+
+</table>
+
+<table border=1 cellpadding=10 width=800>
+
+<tr><td><h4>Level 4</h4>
+
+<p>Now extend the implementation by including the Combo meal.  
+A Combo meal can comprise of any number of food items, even duplicates.
+There is no need to perform any input validation in terms of duplicate Combos, Combos comprising invalid indices, or Combos comprising other Combos.
+
+<p>You can also be assurred that the Combo is the only complex menu item that M<sup>c</sup>AcMe needs to handle.
+
+<p>Finally, Combo items are always printed at the end of the menu.
+
+<!--
+<p>The following is a sample run of the program.  User input is <u>underlined</u>.  
+ Ensure that the last line of output is followed by a newline character. -->
+
+<pre>
+$ javac your_java_files
+$ jshell -q your_java_files_in_bottom-up_dependency_order < test4.jsh
+jshell> Menu menu = new Menu();
+jshell> menu.add("Burger","Hamburger",399)
+$.. ==> #0 Burger: Hamburger (399)
+jshell> menu.add("Snack","Fries",189)
+$.. ==> #1 Snack: Fries (189)
+jshell> menu.add("Drink","SoftDrink",149)
+$.. ==> #2 Drink: SoftDrink (149)
+jshell> menu.add("Combo","HappyMeal", Arrays.asList(0, 1, 2))
+$.. ==> #3 Combo: HappyMeal (687)
+   #0 Burger: Hamburger (399)
+   #1 Snack: Fries (189)
+   #2 Drink: SoftDrink (149)
+jshell> menu.add("Snack","Drumlets",169)
+$.. ==> #4 Snack: Drumlets (169)
+jshell> menu.add("Burger","CheeseBurger",200)
+$.. ==> #5 Burger: CheeseBurger (200)
+jshell> menu.add("Drink","OrangeJuice",209)
+$.. ==> #6 Drink: OrangeJuice (209)
+jshell> menu.print()
+#0 Burger: Hamburger (399)
+#5 Burger: CheeseBurger (200)
+#1 Snack: Fries (189)
+#4 Snack: Drumlets (169)
+#2 Drink: SoftDrink (149)
+#6 Drink: OrangeJuice (209)
+#3 Combo: HappyMeal (687)
+   #0 Burger: Hamburger (399)
+   #1 Snack: Fries (189)
+   #2 Drink: SoftDrink (149)
+jshell> new Order(menu).add(new int[]{2, 1, 4, 3})
+$.. ==> 
+#2 Drink: SoftDrink (149)
+#1 Snack: Fries (189)
+#4 Snack: Drumlets (169)
+#3 Combo: HappyMeal (687)
+   #0 Burger: Hamburger (399)
+   #1 Snack: Fries (189)
+   #2 Drink: SoftDrink (149)
+Total: 1194
+jshell> /exit
+</pre>
+
+<!--
+<p><table border=1 >
+
+<tr><td><tt>
+<u>add Burger Hamburger 399</u><br>
+<u>add Snack Fries 189</u><br>
+<u>add Drink SoftDrink 149</u><br>
+<u>add Combo 0 1 2</u><br>
+<u>add Snack Drumlets 169</u><br>
+<u>add Burger CheeseBurger 200</u><br>
+<u>add Drink OrangeJuice 209</u><br>
+<u>end</u><br>
+#0 Burger: Hamburger (399)<br>
+#5 Burger: CheeseBurger (200)<br>
+#1 Snack: Fries (189)<br>
+#4 Snack: Drumlets (169)<br>
+#2 Drink: SoftDrink (149)<br>
+#6 Drink: OrangeJuice (209)<br>
+<u>2 1 4 3 0</u><br>
+<u>^D</u><br>
+--- Order ---<br>
+#2 Drink: SoftDrink (149)<br>
+#1 Snack: Fries (189)<br>
+#4 Snack: Drumlets (169)<br>
+#3 Combo (687)<br>
+&nbsp;&nbsp;&nbsp;#0&nbsp;Burger:&nbsp;Hamburger&nbsp;(399)<br>
+&nbsp;&nbsp;&nbsp;#1&nbsp;Snack:&nbsp;Fries&nbsp;(189)<br>
+&nbsp;&nbsp;&nbsp;#2&nbsp;Drink:&nbsp;SoftDrink&nbsp;(149)<br>
+#0 Burger: Hamburger (399)<br>
+Total: 1593<br>
+</tt>
+
+</table>
+
+<p>Click <a href="https://codecrunch.comp.nus.edu.sg/task_view.php?tid=4190" target="_blank">here</a> 
+to submit to CodeCrunch.
+
+<p>Check the format correctness of the output by typing the following Unix command
+<pre>
+$ java Main &lt; test4.in | diff - test4.out
+</pre>
+
+<p>Make a copy of your Java programs to the level directory by typing the Unix commands
+
+<pre>
+$ mkdir food4
+$ cp *.java food4
+</pre>
+-->
+
+</table>
+
+<table border=1 cellpadding=10 width=800>
+
+<tr><td><h4>Level 5</h4>
+
+<p>Now complete the program by including the input and output.
+The <tt>Main</tt> class has been provided to you.
+
+<pre>
+import java.util.Scanner;
+
+class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        while(sc.next().equals("add")) {
+           // read menu items here
+        }
+
+        while (sc.hasNext()) {
+           // read order here
+        }
+    }
+}
+</pre>
+
+<p>Modify the <tt>Main</tt> class to read the food items and print out the menu in order of presentation.
+
+<p>The following is a sample run of the program.  User input is <u>underlined</u>.  
+<!-- Ensure that the last line of output is followed by a newline character. -->
+
+<p><table border=1 >
+
+<tr><td><tt>
+<u>add Burger Hamburger 399</u><br>
+<u>add Snack Fries 189</u><br>
+<u>add Drink SoftDrink 149</u><br>
+<u>add Combo HappyMeal 0 1 2</u><br>
+<u>add Snack Drumlets 169</u><br>
+<u>add Burger CheeseBurger 200</u><br>
+<u>add Drink OrangeJuice 209</u><br>
+<u>end</u><br>
+#0 Burger: Hamburger (399)<br>
+#5 Burger: CheeseBurger (200)<br>
+#1 Snack: Fries (189)<br>
+#4 Snack: Drumlets (169)<br>
+#2 Drink: SoftDrink (149)<br>
+#6 Drink: OrangeJuice (209)<br>
+#3 Combo: HappyMeal (687)<br>
+&nbsp;&nbsp;&nbsp;#0&nbsp;Burger:&nbsp;Hamburger&nbsp;(399)<br>
+&nbsp;&nbsp;&nbsp;#1&nbsp;Snack:&nbsp;Fries&nbsp;(189)<br>
+&nbsp;&nbsp;&nbsp;#2&nbsp;Drink:&nbsp;SoftDrink&nbsp;(149)<br>
+<u>2 1 4 3 0</u><br>
+<u>^D</u><br>
+<br>
+--- Order ---<br>
+<br>
+#2 Drink: SoftDrink (149)<br>
+#1 Snack: Fries (189)<br>
+#4 Snack: Drumlets (169)<br>
+#3 Combo: HappyMeal (687)<br>
+&nbsp;&nbsp;&nbsp;#0&nbsp;Burger:&nbsp;Hamburger&nbsp;(399)<br>
+&nbsp;&nbsp;&nbsp;#1&nbsp;Snack:&nbsp;Fries&nbsp;(189)<br>
+&nbsp;&nbsp;&nbsp;#2&nbsp;Drink:&nbsp;SoftDrink&nbsp;(149)<br>
+#0 Burger: Hamburger (399)<br>
+Total: 1593<br>
+</tt>
+
+</table>
+
+<!--
+<p>Click <a href="https://codecrunch.comp.nus.edu.sg/task_view.php?tid=4191" target="_blank">here</a> 
+to submit to CodeCrunch.
+-->
+
+<p>Check the format correctness of the output by typing the following Unix command
+<pre>
+$ java Main &lt; test5.in | diff - test5.out
+</pre>
+
+<!--
+<p>Make a copy of your Java programs to the level directory by typing the Unix commands
+
+<pre>
+$ mkdir food5
+$ cp *.java food5
+</pre>
+-->
+</table>
+
+<!--
+<table border=1 cellpadding=10 width=800>
+
+<tr><td><h4>Level 6 (Surprise!)</h4>
+
+<p>The purpose of this level is to determine an aspect of abstraction in your program.
+You might have noticed that when the menu is output, the Combo meals are missing.
+By making minimal modifications to your program in the previous level, output the Combo meals at the end of the menu.
+
+<p>The following is a sample run of the program.  User input is <u>underlined</u>.  
+ Ensure that the last line of output is followed by a newline character. 
+
+<p><table border=1 >
+
+<tr><td><tt>
+<u>add Burger Hamburger 399</u><br>
+<u>add Snack Fries 189</u><br>
+<u>add Combo 0 1 2</u><br>
+Error: Invalid Combo input 0 1 2<br>
+<u>add Drink SoftDrink 149</u><br>
+<u>add Combo 0 2 1</u><br>
+Error: Invalid Combo input 0 2 1<br>
+<u>add Combo 0 1 2</u><br>
+<u>add Snack Drumlets 169</u><br>
+<u>add Burger CheeseBurger 200</u><br>
+<u>add Drink OrangeJuice 209</u><br>
+<u>end</u><br>
+#0 Burger: Hamburger (399)<br>
+#5 Burger: CheeseBurger (200)<br>
+#1 Snack: Fries (189)<br>
+#4 Snack: Drumlets (169)<br>
+#2 Drink: SoftDrink (149)<br>
+#6 Drink: OrangeJuice (209)<br>
+#3 Combo (687)<br>
+&nbsp;&nbsp;&nbsp;#0&nbsp;Burger:&nbsp;Hamburger&nbsp;(399)<br>
+&nbsp;&nbsp;&nbsp;#1&nbsp;Snack:&nbsp;Fries&nbsp;(189)<br>
+&nbsp;&nbsp;&nbsp;#2&nbsp;Drink:&nbsp;SoftDrink&nbsp;(149)<br>
+<u>2 1 4 3 0</u><br>
+<u>^D</u><br>
+--- Order ---<br>
+#2 Drink: SoftDrink (149)<br>
+#1 Snack: Fries (189)<br>
+#4 Snack: Drumlets (169)<br>
+#3 Combo (687)<br>
+&nbsp;&nbsp;&nbsp;#0&nbsp;Burger:&nbsp;Hamburger&nbsp;(399)<br>
+&nbsp;&nbsp;&nbsp;#1&nbsp;Snack:&nbsp;Fries&nbsp;(189)<br>
+&nbsp;&nbsp;&nbsp;#2&nbsp;Drink:&nbsp;SoftDrink&nbsp;(149)<br>
+#0 Burger: Hamburger (399)<br>
+Total: 1593<br>
+</tt>
+
+</table>
+
+<p>Click <a href="https://codecrunch.comp.nus.edu.sg/task_view.php?tid=4192" target="_blank">here</a> 
+to submit to CodeCrunch.
+
+<p>Check the format correctness of the output by typing the following Unix command
+<pre>
+$ java Main &lt; test5.in 2&gt;&amp;1 | diff - test5.out
+</pre>
+
+<p>Make a copy of your Java programs to the level directory by typing the Unix commands
+
+<pre>
+$ mkdir food5
+$ cp *.java food5
+</pre>
+
+</table>
+-->
