@@ -1,0 +1,10 @@
+InfiniteList<Integer> ifl = InfiniteList.generate(() -> 1).limit(100)
+InfiniteList.generate(() -> 1).limit(2).forEach(System.out::println)
+InfiniteList.iterate(1, x -> x + 1).limit(10).toArray()
+InfiniteList.iterate(1, x -> x + 1).filter(x -> x % 2 == 0).limit(2).forEach(System.out::println)
+InfiniteList.iterate(1, x -> x + 1).filter(x -> x % 2 == 0).limit(5).limit(10).toArray()
+InfiniteList.iterate(1, x -> x + 1).filter(x -> x % 2 == 0).limit(10).limit(5).toArray()
+InfiniteList.iterate(1, x -> x + 1).limit(5).filter(x -> x % 2 == 0).limit(10).toArray()
+InfiniteList.generate(() -> Math.PI).limit(0).toArray()
+InfiniteList.iterate("A", x -> x + "Z").limit(-1).forEach(System.out::println)
+/exit
