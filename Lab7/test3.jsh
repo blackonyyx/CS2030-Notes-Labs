@@ -1,0 +1,27 @@
+jshell> new Customer(10.0, 1)
+new Customer(11.0, 1)
+new Customer(12.0, 2)
+new Customer(12.0, 2).timeWaited(15.0)
+Server s1 = new Server(1);
+s1.hasWaitingCustomer()
+s1.getWaitingCustomer()
+s1.isIdle()
+Server s2 = s1.serve(new Customer(1.0, 1));
+s1.isIdle()
+s2.isIdle()
+Server s3 = s2.askToWait(new Customer(2.0, 2));
+s2.hasWaitingCustomer()
+s2.getWaitingCustomer()
+s3.hasWaitingCustomer()
+s3.getWaitingCustomer()
+Server s4 = s3.makeIdle()
+s3.isIdle()
+s4.isIdle()
+Server s5 = s4.serve(new Customer(2.0, 2))
+s4.hasWaitingCustomer()
+s4.getWaitingCustomer()
+s4.isIdle()
+s5.hasWaitingCustomer()
+s5.getWaitingCustomer()
+s5.isIdle()
+/exit
