@@ -1,0 +1,314 @@
+<h3>CS2030 Lab #7 (Getting Functional)</h3>
+
+<h4>Topic Coverage</h4>
+<ul>
+	<li><code>Optional</code></li>
+	<li><code>Stream</code></li>
+	<li>Immutability</li>
+	<li>Pure Functions</li>
+</ul>
+
+<h4>Problem Description</h4>
+
+This lab aims to get you to acquainted with how to write a functional-style Java program.
+We have released a possible solution to your discrete event simulation project (Stage 1).  You are tasked to modify (add new methods, revise method signatures, etc) this given solution to follow the following rules:
+
+<ul>
+	<li>Classes, in particular, <code>PriorityQueue</code>, <code>Server</code>, <code>Shop</code>, <code>SimState</code>, and <code>Statistics</code>, should be changed so that they are immutable.</li>
+	<li>All methods and classes must avoid side effects, except for Main.  All input and output must be quarantined to within <code>Main</code>.</li>
+	<li>Replace polymorphism with lambda expressions.  Replace ArrivalEvent and DoneEvent with lambda expressions that you can store inside the Event class as a field.  You may find that you need to use variable capture to carry around variables that are used in the lambda expression. You need to do this carefully since the objects in your program are now immutable, so a reference that your lambda expression captures might not be referring to the latest version of the object!</li>
+	<li>Replace all while loops, for loops, and loops disguised as recursion, with stream operations (including those in <code>Main</code>). In doing so, you may notice that the methods <code>findIdleServer</code> and <code>findServerWithNoWaitingCustomer</code> in <code>Shop</code> can be refactored and simplified.  </li>
+	<li>Use <code>Optional</code> for all variables that could be <code>null</code>. Such variables include those representing a customer, a server, an event, the scanner, etc.   Avoid using <code>Optional::isPresent</code>, <code>Optional::get</code>, and <code>Optional::orElseThrow</code> unless necessary.
+</ul>
+
+<p>This task is divided into several levels.  Read through all the levels to see how the different levels are related.</p>
+
+<p>Remember to:
+<ul>
+	<li>always compile your program files first before either using <tt>jshell</tt> to test your program or using <tt>java</tt> to run your program
+<li><tt>checkstyle</tt> and <tt>javadoc</tt> comments can be included after your programs have been up-loaded to CodeCrunch; you have till Friday midnight to do so.
+</ul>
+
+<p>
+<table border=1 cellpadding=10 width=800>
+
+<tr><td><h4>Level 0</h4>
+<p>
+This level is already completed for you for free.  Take a look and get familiarized with the <code>Pair</code> class given.
+</p>
+
+<pre>
+$ javac Pair.java
+$ jshell -q Pair.java
+jshell> Pair&lt;Integer,String&gt; pair = Pair.of(1, "one");
+jshell> pair.first
+$.. ==> 1
+jshell> pair.second
+$..  ==> "one"
+jshell> Pair&lt;Long,Long&gt; pair = Pair.of(0L, 100L);
+jshell> pair.first
+$..  ==> 0
+jshell> pair.second
+$..  ==> 100
+jshell> /exit
+</pre>
+</td></tr>
+
+<p>Note that due to the limitations of jshell, the following warning arises
+
+<pre>
+jshell> /open Pair.java
+|  Warning:
+|  Modifier 'final'  not permitted in top-level declarations, ignored
+|  public final class Pair<T,U> {
+|  ^----------^
+</pre>
+
+You may ignore this warning.
+
+<tr><td><h4>Level 1</h4>
+<p>
+The <code>java.util.PriorityQueue</code> class provided by Java Collection Framework is not immutable.  
+
+<p>A new substitute <code>PriorityQueue</code> class has been written for you that wraps around <code>java.util.PriorityQueue</code> to help support chaining of commands.  However, the given implementation 
+
+<ul>
+    <li>is not immutable
+    <li><code>poll</code> returns a <tt>null</tt> value when it's empty
+</ul> 
+
+<p>Modify the <tt>PriorityQueue</tt> class to handle the above.
+<!--
+the implementation is not full
+
+
+so that we have a immutable <code>PriorityQueue</code> that supports chaining of commands.
+</p>
+<p>
+Beware that you should not use <code>import java.util.*</code> or <code>import java.util.PriorityQueue</code> in a client that uses your own substitute <code>PriorityQueue</code>, to avoid name clashes.
+</p>
+-->
+
+<pre>
+$ javac Pair.java PriorityQueue.java
+$ jshell -q Pair.java PriorityQueue.java
+jshell> PriorityQueue&lt;String&gt; pq = new PriorityQueue&lt;&gt;()
+jshell> pq = pq.add("hello").add("world").add("hola").add("mundo")
+jshell> pq.poll().first
+$.. ==> Optional[hello]
+jshell> pq.poll().first
+$.. ==> Optional[hello]
+jshell> pq.poll().second.poll().first
+$.. ==> Optional[hola]
+jshell> for (int i = 0; i &lt; 4; i++) pq = pq.poll().second;
+jshell> pq.poll().first
+$.. ==> Optional.empty
+jshell> /exit
+</pre>
+
+<p>Check your styling by issuing the following<pre>$ checkstyle *.java</pre></p>
+
+</td></tr>
+<tr><td><h4>Level 2</h4>
+
+<p>
+Next, change the <code>Statistics</code> class so that it becomes immutable.
+</p>
+
+<pre>
+$ javac Statistics.java 
+$ jshell -q Statistics.java
+jshell> Statistics stats = new Statistics()
+jshell> stats.serveOneCustomer()
+$.. ==> [0.000 1 0]
+jshell> stats.serveOneCustomer().looseOneCustomer()
+$.. ==> [0.000 1 1]
+jshell> stats.recordWaitingTime(10.0).serveOneCustomer().looseOneCustomer()
+$.. ==> [10.000 1 1]
+jshell> stats.recordWaitingTime(10.0).serveOneCustomer().looseOneCustomer().recordWaitingTime(2.0).serveOneCustomer()
+$.. ==> [6.000 2 1]
+jshell> /exit
+</pre>
+
+<p>Check your styling by issuing the following<pre>$ checkstyle *.java</pre></p>
+
+</td></tr>
+
+<tr><td><h4>Level 3</h4>
+
+<p>
+This is where the fun begins.  We start gently first.  Besides making them immutable and pure, change <code>Customer</code> and <code>Server</code> to use <code>Optional</code> where needed.  
+</p>
+<pre>
+$ javac Customer.java Server.java
+$ jshell -q Customer.java Server.java
+jshell> new Customer(10.0, 1)
+$.. ==> 1
+jshell> new Customer(11.0, 1)
+$.. ==> 1
+jshell> new Customer(12.0, 2)
+$.. ==> 2
+jshell> new Customer(12.0, 2).timeWaited(15.0)
+$.. ==> 3.0
+jshell> Server s1 = new Server(1);
+jshell> s1.hasWaitingCustomer()
+$.. ==> false
+jshell> s1.getWaitingCustomer()
+$.. ==> Optional.empty
+jshell> s1.isIdle()
+$.. ==> true
+jshell> Server s2 = s1.serve(new Customer(1.0, 1));
+jshell> s1.isIdle()
+$.. ==> true
+jshell> s2.isIdle()
+$.. ==> false
+jshell> Server s3 = s2.askToWait(new Customer(2.0, 2));
+jshell> s2.hasWaitingCustomer()
+$.. ==> false
+jshell> s2.getWaitingCustomer()
+$.. ==> Optional.empty
+jshell> s3.hasWaitingCustomer()
+$.. ==> true
+jshell> s3.getWaitingCustomer()
+$.. ==> Optional[2]
+jshell> Server s4 = s3.makeIdle()
+jshell> s3.isIdle()
+$.. ==> false
+jshell> s4.isIdle()
+$.. ==> true
+jshell> Server s5 = s4.serve(new Customer(2.0, 2))
+jshell> s4.hasWaitingCustomer()
+$.. ==> true
+jshell> s4.getWaitingCustomer()
+$.. ==> Optional[2]
+jshell> s4.isIdle()
+$.. ==> true
+jshell> s5.hasWaitingCustomer()
+$.. ==> false
+jshell> s5.getWaitingCustomer()
+$.. ==> Optional.empty
+jshell> s5.isIdle()
+$.. ==> false
+jshell> /exit
+</pre>
+</p>
+
+<tr><td><h4>Level 4</h4>
+<p>
+Now change <code>Shop</code> to use a stream to create the list of servers and use lambda to look for a server that meets a given criteria.  You should also make <code>Shop</code> immutable.  Whenever a server inside the shop changes, you should create and return a new shop containing the updated server.  Unchanged servers can remain within the new shop.  The method <code>replace</code> helps to achieve that -- by replacing the server with matching id within the shop with the given server.
+</p>
+<pre>
+$ javac Customer.java Server.java Shop.java
+$ jshell -q Customer.java Server.java Shop.java
+jshell> Shop shop1 = new Shop(10);
+jshell> shop1.find(server -> server.equals(new Server(1)))
+$.. ==> Optional[1]
+jshell> shop1.find(server -> server.isIdle())
+$.. ==> Optional[1]
+jshell> shop1.find(server -> !server.isIdle())
+$.. ==> Optional.empty
+jshell> shop1.replace(new Server(1).serve(new Customer(1, 1))).find(server -> server.isIdle())
+$.. ==> Optional[2]
+jshell> /exit
+</pre>
+
+<tr><td><h4>Level 5</h4>
+
+We now have all the ingredients ready to tackle <code>SimState</code>, which stores the states of the simulation.  There are several things to change: 
+<ul>
+	<li>Side effects must be isolated to <code>Main</code>.  Thus, the <code>noteXXX</code> methods must not print to screen.  Instead, all output should be stored in a string that will be printed in the <code>toString</code> method.</li>
+	<li>There are multiple uses of <code>null</code> and loops within this class.  Replace all of them with <code>Optional</code> and <code>Stream</code> as needed.</li>
+	<li>SimState must be immutable.  A new state must be return if any one of the internal states -- either the shop, the event queue, the log messages, the statistics, and other <i>additional internal states you may want to keep</i> changes. </li>
+	<li>Remove <code>Event</code>, <code>ArrivalEvent</code>, and <code>DoneEvent</code>.  Replace them with an inner <code>Event</code> class of <code>SimState</code> that stores a lambda expression, dictating what to do when the event is executed.</li>
+</ul>
+
+<pre>
+$ javac *java
+$ jshell -q your_files_in_dependency_order
+jshell> SimState s = new SimState(1);
+jshell> Customer c1 = new Customer(1.0, 1);
+jshell> Customer c2 = new Customer(1.5, 2);
+jshell> Customer c3 = new Customer(1.8, 3);
+jshell> Server server = new Server(1);
+jshell> s = s.noteArrival(1.0, c1);
+jshell> s = s.noteServed(1.0, server, c1);
+jshell> s = s.noteArrival(1.5, c2);
+jshell> s = s.noteWait(1.5, server, c2);
+jshell> s = s.noteArrival(1.8, c3);
+jshell> s = s.noteLeave(1.8, c3);
+jshell> s = s.noteDone(2.0, server, c1);
+jshell> s = s.noteServed(2.0, server, c2);
+jshell> s = s.noteDone(3.0, server, c1);
+jshell> s
+s ==> 1.000 1 arrives
+1.000 1 served by 1
+1.500 2 arrives
+1.500 2 waits to be served by 1
+1.800 3 arrives
+1.800 3 leaves
+2.000 1 done serving by 1
+2.000 2 served by 1
+3.000 1 done serving by 1
+[0.250 2 1]
+jshell> s = new SimState(2);
+jshell> Server s1 = new Server(1);
+jshell> Server s2 = new Server(2);
+jshell> s = s.simulateArrival(1.0).simulateArrival(1.5).simulateArrival(1.8);
+jshell> s = s.simulateDone(2.0, s1, c1).simulateDone(2.5, s2, c2).simulateDone(3.0, s1, c3);
+jshell> s
+s ==> 1.000 1 arrives
+1.000 1 served by 1
+1.500 2 arrives
+1.500 2 served by 2
+1.800 3 arrives
+1.800 3 waits to be served by 1
+2.000 1 done serving by 1
+2.000 3 served by 1
+2.500 2 done serving by 2
+3.000 3 done serving by 1
+[0.067 3 0]
+jshell> SimState s = new SimState(1);
+jshell> s = s.addEvent(1.0, state -> state.simulateArrival(1.0));
+jshell> s = s.addEvent(1.5, state -> state.simulateArrival(1.5));
+jshell> s = s.addEvent(1.8, state -> state.simulateArrival(1.8));
+jshell> s.run()
+$.. ==> 1.000 1 arrives
+1.000 1 served by 1
+1.500 2 arrives
+1.500 2 waits to be served by 1
+1.800 3 arrives
+1.800 3 leaves
+2.000 1 done serving by 1
+2.000 2 served by 1
+3.000 2 done serving by 1
+[0.250 2 1]
+jshell> /exit
+</pre>
+
+</td></tr>
+<tr><td><h4>Level 6</h4>
+
+<p>Now, put everything together (and fill in whatever necessary gaps not described above) to re-write <code>Main</code> class, that meet the 
+specification and pass the tests of the Discrete Event Simulation Project Stage 1.
+
+<p>Note that we will check against the use of <code>null</code> and loops (including loops disguised as recursion) so if you have not fully converted your code to use only <code>Stream</code> and <code>Optional</code>, your code might not compile on CodeCrunch.
+<!--
+<p>Check the format correctness of the output by typing the following Unix command
+<pre>
+$ java Main &lt; test6.in | diff - test6.out
+</pre>
+
+<p>Check your styling by issuing the following<pre>$ checkstyle *.java</pre></p>
+-->
+</td></tr>
+<tr><td><h4>Tips</h4>
+		<ul>
+			<li>Get yourself familiarize with the APIs provided by <code>Stream</code> and <code>Optional</code>.
+			<li>You might find <a href="https://piazza.com/class/jzm7f4ppc1k276?cid=203">Post 203</a> on Piazza useful.</li>
+			<li>Avoid creating temporary variables to store intermediate results.  Instead, try to chain the method calls together as much as possible into a single statement.  This avoid having to deal with the types of the intermediate results.</li>
+			<li>You will find write a method that prints out the various internal states of the current <code>SimState</code> useful.  This debugging method should return <code>this</code> <code>SimState</code> so that you can chain it together with your other method calls.  This is a great time saver!</li>
+		</ul>
+
+</td></tr>
+
+</td></tr></table>
