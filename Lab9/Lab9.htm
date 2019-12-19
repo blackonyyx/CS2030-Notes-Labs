@@ -1,0 +1,575 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="expires" content="-1" />
+<title>CodeCrunch</title>
+<!-- START NUS Includes-->
+<script type="text/javascript" src="/nus/nussearch.js"></script>
+<link rel="stylesheet" type="text/css" href="/nus/nusbase.css" media="screen, print, projection, handheld" />
+<link rel="stylesheet" type="text/css" href="/nus/nusmenu.css" media="screen, print, projection, handheld" />
+<link rel="stylesheet" type="text/css" href="/nus/nusscreen.css" media="screen, projection, print" />
+<link href="/nus/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+<link rel="apple-touch-icon" href="/nus/blank.png"/>
+<!-- END NUS Includes -->
+<script type="text/javascript" src="/js/ajax.js"></script>
+<script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="/js/jquery.tablesorter.min.js"></script>
+<script type="text/javascript" src="/js/jquery.tablesorter.pager.js"></script>
+<!--<script type="text/javascript" src="/js/folding.js"></script>-->
+<script type="text/javascript" src="/js/jquery.watermark.min.js"></script>
+<script type="text/javascript">
+            function enterPressButton(field, button) {
+                $(field).keypress(function(e){if(e.which==13)$(button).trigger("click");});
+            }
+</script>
+<link rel="stylesheet" href="/css/style.css" type="text/css" />
+<link rel="stylesheet" href="/css/tablesorter/jquery.tablesorter.css" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+<!--<script type="text/javascript" src="js/folding.js"></script>-->
+<script type="text/javascript" src="js/jquery.rating.js"></script>
+<script type="text/javascript" src="js/behaviour.js"></script>
+<script type="text/javascript" src="js/textarea_maxlen.js"></script>
+<script type="text/javascript" src="js/jquery.timer.js"></script>
+
+<script type="text/javascript" src="plupload/js/plupload.full.min.js"></script>
+
+<link rel="stylesheet" href="css/jquery.rating.css" type="text/css" />
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+<link rel="stylesheet" href="css/tagcloud.css" type="text/css" />
+<link rel="stylesheet" href="css/jquery-ui-1.7.2.custom.css" type="text/css" />
+
+<link rel="stylesheet" href="plupload/js/jquery_ui_plupload/css/jquery.ui.plupload.css" type="text/css" />
+
+</head>
+
+<body>
+<!-- START NUS-Header -->
+
+<!-- NUS Header -->
+<div id="nusheader" class="nusbody">
+<div class="nuslogodiv">
+<a href="http://www.nus.edu.sg/">
+<img class="nuslogo" src="/nus/soclogo.png" alt="" />
+</a>
+</div>
+<div id="nuspointermenu">
+<ul>
+<li><a href="http://exchange.nus.edu.sg/"><span style="text-transform:none">NUS WebMail</span></a></li>
+<li><a href="https://ivle.nus.edu.sg/lms/default.aspx">ivle</a></li>
+<li><a href="http://www.lib.nus.edu.sg/">library</a></li>
+<li><a href="http://www.nus.edu.sg/campusmap/" >maps</a></li>
+<!--<li><a href="https://aces01.nus.edu.sg/CoE/jsp/coeMain.jsp">calendar</a></li>-->
+<!--<li><a href="/sitemap">sitemap</a></li>-->
+<!--<li><a href="#">a-z index</a></li>-->
+<!--<li><a href="/contact">contact</a></li>-->
+<li><a href="#" id="rightcorner">&nbsp;</a></li>
+</ul>
+<br style="clear: left" />
+</div>
+<div id="searchform">
+<script src="/nus/nussearch.js" type="text/javascript"></script>
+<form id="frmSearch" onsubmit="evalSearch();return false" action=""><div>
+<a href="http://www.nus.edu.sg/search/" style="text-decoration:none; font-size:11px; font-weight:bold; color:#666666">Search </a>
+<input id="txtKeyword" type="text" value="search for..." onfocus="value=''" class="equal" size="18" />
+in
+<select id="SearchMenu" name="SearchMenu">
+<option selected="selected" value="0">NUS Websites</option>
+<option value="1">Internet</option>
+<option value="2">Staff Directory</option>
+<option value="3">Advanced Search</option>
+</select>
+<input class="equal" id="Go" src="/nus/go.png" type="image" />
+</div></form>
+</div>
+</div>
+
+<!-- NUS Local-Navigation --><!--
+<div id="nusmenu" class="nusbody"><div id="nusmenu_l"><div id="nusmenu_r">
+<ul>
+  <li><a href="http://www.comp.nus.edu.sg/index.html">Home</a></li>
+  <li><a href="http://www.comp.nus.edu.sg/about.html">About Us</a></li>
+  <li><a class="drop" href="javascript:;">Departments</a>
+    <ul>
+      <li><a href="http://www.comp.nus.edu.sg/cs" >Computer Science</a></li>
+      <li><a href="http://www.comp.nus.edu.sg/is/" >Information Systems</a></li>
+    </ul>
+  </li>
+  <li><a href="http://www.comp.nus.edu.sg/undergraduates" >Undergraduate</a></li>
+  <li><a href="http://www.comp.nus.edu.sg/graduates" >Graduate</a></li>
+  <li><a href="http://www.comp.nus.edu.sg/research" >Research</a></li>
+  <li><a href="http://www.comp.nus.edu.sg/entrepreneurship" >Entrepreneurship</a></li>
+  <li><a href="http://www.stmi.nus.edu.sg" >Executive Education</a></li>
+  <li><a href="http://www.comp.nus.edu.sg/external_relations" >External Relations</a></li>
+</ul>
+</div></div></div>
+-->
+
+<!-- NUS Inner-Title -->
+<div id="nustitle" class="nusbody"><div id="nustitle_l"><div id="nustitle_r">
+              <h1 id="site-name">
+                <a href="/" title="Home" rel="home">CodeCrunch</a>
+              </h1>
+</div></div></div>
+
+<!-- END NUS-Header -->
+
+<div id="banner">
+        <div id="topmenu">
+        <div id="login">
+                Logged in as: <strong>e0389094</strong>
+                </div>
+                <div style="display: block;"><ul>
+                                        <li><a href="index.php" >Home</a></li>
+                                                    <li><a href="course_viewall.php" >Courses</a></li>
+                                                                <li><a href="tutorial_viewall.php" >Tutorials</a></li>
+                                                                <li><a href="task_viewall.php" >Tasks</a></li>
+                                                                <li><a href="tutorial_browser.php" >Browse Tutorials</a></li>
+                                                                <li><a href="user_viewsubmissions.php" >My Submissions</a></li>
+                                                                <li><a href="tools.php
+" >Tools</a></li>
+                                                <li><a href="logout_process.php" >Logout</a></li>
+                            </ul></div>
+        </div>
+</div>
+<div id="container">
+<div id="outer">
+<div id="inner">
+	<div id="content_full">                         
+		<div class="content-header"><h3>CS2030 Lab #9</h3></div>
+		<div class="spacer"></div>
+		<table width="100%" cellpadding="0" cellspacing="0" border="0">
+			<tr><td valign="top" style="width: 30%;">
+				<div class="meta_header">Tags &amp; Categories</div>
+				<div id="classifyList"></div>
+			</td>
+			<td valign="top" style="width: 40%;">
+				<div class="meta_header">Related Tutorials</div>
+				<div id="tutorialList"></div>
+			</td>
+			<td valign="top" style="width: 30%;">
+			</td>
+			</tr>
+		</table>
+		<div class="content-header">
+			<h3>Task Content
+							</h3>
+		</div>                          
+		<div class="panel"><div class="task-content">
+		<h3>CS2030 Lab #9 (Parallelizing Matrix Multiplication)</h3>
+<h4>Problem Description</h4>
+<p>Matrix multiplication is a fundamental operation with many applications in physics, engineering, mathematics, and computer science.</p>
+<p>Given a matrix <tt>A<sub>n&times;m</sub></tt> of <tt>n</tt> rows by <tt>m</tt> columns, and a matrix <tt>B<sub>m&times;p</sub></tt>, the matrix product <tt>C<sub>n&times;p</sub> = AB</tt> is an has elements  <tt>c<sub>ij</sub></tt> given by</p>
+<p><tt>c<sub>ij</sub> = &sum;<sup>m</sup><sub>k=1</sub></tt> m<sub>k</sub> = a<sub>ik</sub> b<sub>kj</sub></p>
+<p>In this lab, we are interested in parallelizing the following divide-and-conquer algorithm for matrix multiplication. Let</p>
+<pre>A = [ A<sub>11</sub> A<sub>12</sub> ]
+    [ A<sub>21</sub> A<sub>22</sub> ]
+
+B = [ B<sub>11</sub> B<sub>12</sub> ]
+    [ B<sub>21</sub> B<sub>22</sub> ]
+
+C = [ C<sub>11</sub> C<sub>12</sub> ]
+    [ C<sub>21</sub> C<sub>22</sub> ]
+</pre>
+<p>where <tt>A<sub>11</sub></tt>, <tt>A<sub>12</sub></tt>, etc. are block partitioned matrices of <strong>equal</strong> sizes.  If <tt>C = AB</tt>, then:</p>
+<pre>C = [ C<sub>11</sub> C<sub>12</sub> ] 
+    [ C<sub>21</sub> C<sub>22</sub> ]
+
+  = [ A<sub>11</sub> A<sub>12</sub> ] [ B<sub>11</sub> B<sub>12</sub> ]
+    [ A<sub>21</sub> A<sub>22</sub> ] [ B<sub>21</sub> B<sub>22</sub> ]
+
+  = [ A<sub>11</sub>B<sub>11</sub>+A<sub>12</sub>B<sub>21</sub>  A<sub>11</sub>B<sub>12</sub>+A<sub>12</sub>B<sub>22</sub> ]
+    [ A<sub>21</sub>B<sub>11</sub>+A<sub>22</sub>B<sub>21</sub>  A<sub>21</sub>B<sub>12</sub>+A<sub>22</sub>B<sub>22</sub> ]
+</pre>
+<h4>The Task</h4>
+<p>You are to implement the above divide-and-conquer algorithm as a <tt>RecursiveTask</tt> and submit it to <tt>ForkJoinPool</tt> for execution. For simplicity, we only need to handle square matrices of size <tt>2<sup>n</sup></tt> for <tt>n</tt> up to <tt>11</tt>.</p>
+<p>A skeleton file <tt><a href="taskfile.php/4072/MatrixMultiplication.java">MatrixMultiplication.java</a></tt> has been provided for you.  The class <tt>MatrixMultiplication</tt> inherits from <tt>RecursiveTask</tt>, with the necessary fields and constructor. Your task is to complete the <tt>compute</tt> method.</p>
+<p>The file <tt><a href="taskfile.php/4072/Matrix.java">Matrix.java</a></tt> is also provided for you.  It implements a matrix with <tt>double</tt> values, and stores the values of the matrix in a 2D <tt>double</tt> array <tt>m</tt>.  It also stores the dimensions of the matrix in the field <tt>dimension</tt>.  It includes two methods to multiply two matrices, one sequentially with triple for loops, and another (also sequentially) with the recursive divide-and-conquer algorithms. There is a method to compare if two matrices are equal.</p>
+<p>In addition, the method <tt>parallelMultiply</tt> <!-- exists that calls  --> invokes the parallel version of matrix multiplication. At this moment, the method simply calls the non-parallel version of <tt>recursiveMultiply</tt>.  <!-- You are to modify the method to implement the parallel version of recursive matrix multiplication. --> <!-- <tt>MatrixMultiplication</tt>. --></p>
+<p>The file <tt><a href="taskfile.php/4072/Main.java">Main.java</a></tt> provides the driver class which measures the timing runs for a given matrix multiplication task three times before taking the average.  <!-- It may take around 100-120 seconds to multiply sequentially.  --> <!--
+<p>This task is divided into several levels. Read through all the levels  to see how the different levels are related. <b>You may start from any level.</b> -->   <!--
+<p>Take note of the following assumptions:                  
+<ul>
+<li><b>There is no longer an upper bound for the number of customers</b>;
+<li>The format of the input is always correct;
+<li>Output of a <tt>double</tt> value, say <tt>d</tt>, is to be formatted with <tt>String.format("%.3f", d)</tt>;
+<li>Inconsistencies between sample output and actual output involving <tt>-0.000</tt> and <tt>0.000</tt> can be ignored.
+<p>Just remember to                   
+<ul>
+<li>define a <tt>Main</tt> class with the <tt>main</tt> method to test the functionality.  <b>Do not accept any user input</b>.
+<li>compile your program using
+<pre>
+$ javac -d . *.java
+</pre>
+<li>check for output format correctness using the <tt>diff</tt> utility (see specific level for usage details).  Note that only <b>one</b> test case is provided for this; --></p>
+<p>Points to note:</p>
+<ul>
+<li>Find a suitable <tt>FORK_THRESHOLD</tt> for <tt>MatrixMultiplication</tt> such that any matrix dimension smaller than this threshold would be better off using sequential matrix multiplication. </li>
+<li>Try with small matrices first. Make sure the code is correct before you go for larger matrices. </li>
+<li>You should not spawn too many tasks that block, which will in turn lead to too many compensation threads being created in <tt>ForkJoinPool</tt>, and a <tt>RejectedExecutionException</tt> being thrown. <!-- : Caused by: java.util.concurrent.RejectedExecutionException: Thread limit exceeded replacing blocked worker. The order of fork and join becomes important here. --> </li>
+<!--
+<li>You should not let multiple tasks update the same matrix in place. Such side effects may lead to incorrect results.  --> <!--
+<li>When you debug for correctness and optimize for speed up for the parallel version, there is no need to multiply sequentially three times. Feel free to change this part of the code while you are debugging/optimizing your code. -->
+<li>For matrices of dimensions <tt>2<sup>10</sup></tt> and <tt>2<sup>11</sup></tt> , you need to run <tt>java</tt> with the argument <tt>-Xmx[size]</tt> to increase the heap memory size. For example, <tt>-Xmx1g</tt> increases the heap memory up to 1GB, and should work well for both cases. That said, you should still not create too many unnecessary copies of the matrices. </li>
+<li>If you grow impatient while waiting and want to stop the running process, type Control-C in your ssh window. You may have to wait up to a few seconds for the process to stop. <!--
+<li>Check for styling errors by invoking <tt>checkstyle</tt>. For example, to check styling for all java files
+<pre>
+$ checkstyle *.java
+</pre>
+--> <!--
+<li>save a copy of all source files into the appropriate level directory (see specific level for usage details). --> </li>
+<li>You need to only submit <tt>Matrix.java</tt> and <tt>MatrixMultiplication.java</tt> to CodeCrunch.</li>
+</ul>
+<!-- <b> 
+<ul>
+<li>Deadline: Submit your work to CodeCrunch by Thursday, 15 September, 23:59:59. 
+</ul>
+</b> -->		</div></div>                          
+					<div class="content-header">
+					<h3>Submission (Course)</h3>
+			</div>
+			<div id="courseNotification"></div>
+			<div class="panel" id="course_submit">
+				<div><span class="label">Select course:</span> <select id="course_id">
+			<option value="150">CS2030 (2019/2020 Sem 1) - Programming Methodology II</option>				</select>
+				</div>
+				<span class="label" style="vertical-align:top">Your Files:</span>
+				<span class="value-long">
+					<div id="plupload_containerCourse">
+						<a id="course_submission" href="javascript:;" class="submitButton">BROWSE</a>
+					</div>
+					<br />
+					<div id="filelistCourse">Your browser doesn't have HTML5 or Flash support.</div>
+					<script type="text/javascript">
+						var uploaderCourse;
+						$(document).ready(function() {
+							uploaderCourse = new plupload.Uploader({
+								runtimes: 'html5,flash,html4',
+								browse_button: 'course_submission',
+								container: 'plupload_containerCourse',
+								prevent_duplicates: true,
+								url: 'plupload/uploadFiles.php',
+
+								filters: {
+									max_file_size: '8388608', 
+									mime_types: [
+										{title : "Allowed files", extensions : "java,c,cpp,h,py,jar"}	
+									]
+								},
+
+								init: {
+									PostInit: function () {
+										document.getElementById('filelistCourse').innerHTML = '';
+									},
+
+									FilesAdded: function (up, files) {
+										plupload.each(files, function(file) {
+											document.getElementById('filelistCourse').innerHTML += 
+												'<li class="plupload_file ui-state-default plupload_delete" id="' + file.id + '" class="plupload_file_name">' +  
+													'<div class="plupload_file_status">' +
+														'<div class="plupload_file_action">' + 
+															'<div class="plupload_action_icon ui-icon ui-icon-circle-close" onclick="uploaderCourse.removeFile(uploaderCourse.getFile(\''+file.id+'\'));"> </div>' + 
+														'</div>' +
+														'<div class="plupload_file_name" title="' + file.name + '">' + 
+															'<span class="plupload_file_name_wrapper">' + file.name + '   (<i>' + plupload.formatSize(file.size) + '</i>) <b></b>' + '</span>' +
+														'</div>' +
+													'</div>' +
+												'</li>';
+										});
+										document.getElementById('filelistCourse').innerHTML = '<ul class="plupload_filelist_content" id="uploader_filelist_Course" unselectable="on">' + document.getElementById('filelistCourse').innerHTML + '</ul>';
+
+									},
+
+									FilesRemoved: function(up, files) {
+										plupload.each(files, function(file) {
+											$('#' + file.id).remove();
+										});
+									},
+
+									FileUploaded: function(up, file, info) {
+										$('#' + file.id).remove();
+									},
+
+									UploadProgress: function(up, file) {
+										$('#' + file.id + ' b')[0].innerHTML = '<span>' + file.percent + "%</span>";
+									},
+
+									UploadComplete: function(up, files) {
+										doCourseTaskGrade();
+									},
+
+									Error: function(up, err) {
+										alert("\nError #" + err.code + ": " + err.message);
+									}
+								}
+							});
+							uploaderCourse.init();
+						});
+					</script>
+					<p><a href="javascript:uploaderCourse.setOption('multipart_params', { 'sess_id': '77s5jclh05ute126mnf4qnt71fd00532','type': 'course_submission', 'tid': '4072', 'username': 'e0389094', 'uid': '18875' }); javascript:uploaderCourse.start();" class="submitButton">SUBMIT</a>
+					(only .java, .c, .cpp, .h, and .py extensions allowed)</p>
+				</span>
+				<br />
+				<span class="label">&nbsp;</span>
+				<span class="value-long" style="font-size: 90%; color: #777;">To submit multiple files, click on the Browse button, then select one or more
+				files. The selected file(s) will be added to the upload queue. You can repeat this step to add more files. Check that you have all the files
+				needed for your submission. Then click on the Submit button to upload your submission.</span>
+			</div>
+										<input type="hidden" id="tid" name="tid" value="4072" />
+		</div>
+		<!-- end content -->
+</div>
+<!-- end inner -->
+<div id="loading-mask">
+        <p id="loading_mask_loader" class="loader"> <img alt="Loading..." src="images/ajax-loader-tr.gif" /> <br/>
+                Please wait... </p>
+</div>
+<script type="text/javascript">
+$(".star").rating({
+        focus: function(value, link) {
+                var tip = $("#rating_text");
+                tip[0].data = tip[0].data || tip.html(); 
+                tip.html(link.title || "value: " + value);
+        },
+        blur: function(value, link) {
+                var tip = $("#rating_text");
+                $("#rating_text").html(tip[0].data || "");
+        },
+        callback: function(value, link) {
+                $.ajax({
+                        type: "POST",
+                        url: "task_updaterating.php",
+                        data: ({tid:$("#tid").val(), rating:value}),
+                        success: function(html) {
+                                var msg = html.split(";");
+                                $("#rating_text").removeClass().addClass(msg[0]);
+                                $("#rating_text").html(msg[1]);
+                        }
+                });
+        }
+});
+
+function getComments() {
+        $.ajax({
+                type: "POST",
+                url: "task_getcomments.php",
+                data: ({tid:$("#tid").val()}),
+                success: function(html) {
+                        $("#commentList").html(html);
+                }
+        });
+}
+
+function doTaskGrade(e, d) {
+        $.ajax({
+                type: "POST",
+                url: "doTaskGrade.php",
+                data: ({tid:$("#tid").val()}),
+                success: function(html) {
+                        var msg = html.split(";");
+                        $("#practiceNotification").removeClass().addClass(msg[0]);
+                        $("#practiceNotification").html(msg[1]);
+                }
+        });
+
+}
+
+function doCourseTaskGrade(e, d) {
+        $.ajax({
+                type: "POST",
+                url: "doTaskGrade.php",
+                data: ({tid:$("#tid").val(), course_id:$("#course_id").val(), do_course:1}),
+                success: function(html) {
+                        var msg = html.split(";");
+                        $("#courseNotification").removeClass().addClass(msg[0]);
+                        $("#courseNotification").html(msg[1]);
+                }
+        });
+
+}
+
+function addComment() {
+        $.ajax({
+                type: "POST",
+                url: "task_addcomment.php",
+                data: ({tid:$("#tid").val(), comment:encodeURIComponent($("#comment").val())}),
+                success: function(html) {
+                        var msg = html.split(";");
+                        $("#commentNotification").removeClass().addClass(msg[0]);
+                        $("#commentNotification").html(msg[1]);
+                        
+                        getComments();
+                }
+        });
+}
+
+function deleteComment(c) {
+        $.ajax({
+                type: "POST",
+                url: "task_deletecomment.php",
+                data: ({comment_id:c}),
+                success: function(html) {
+                        var msg = html.split(";");
+                        $("#commentNotification").removeClass().addClass(msg[0]);
+                        $("#commentNotification").html(msg[1]);
+                        
+                        getComments();
+                }
+        });
+}
+
+function getClassify(){
+                $.ajax({
+                type: "GET",
+                url: "task_classify.php",
+                data: ({tid:$("#tid").val()}),
+                success: function(html) {
+                        $("#classifyList").html(html);
+                }
+        });
+}
+
+function getTutorial(){
+        $.ajax({
+                type: "POST",
+                url: "task_gettutorials.php",
+                data: ({tid:$("#tid").val()}),
+                success: function(html) {
+                        $("#tutorialList").html(html);
+                }
+        });
+}
+
+function getQueries() {
+        $.ajax({
+                type: "POST",
+                url: "task_getqueries.php",
+                data: ({tid:$("#tid").val()}),
+                success: function(html) {
+                        $("#queryList").html(html);
+                }
+        });
+}
+
+function addQuery() {
+        $.ajax({
+                type: "POST",
+                url: "task_addquery.php",
+                data: ({tid:$("#tid").val(), contest_id:$("#contest_id").val(), query:encodeURIComponent($("#query").val())}),
+                success: function(html) {
+                        var msg = html.split(";");
+                        $("#queryNotification").removeClass().addClass(msg[0]);
+                        $("#queryNotification").html(msg[1]);
+                        
+                        getQueries();
+                }
+        });
+}
+
+function deleteQuery(q) {
+        $.ajax({
+                type: "POST",
+                url: "task_deletequery.php",
+                data: ({query_id:q}),
+                success: function(html) {
+                        var msg = html.split(";");
+                        $("#queryNotification").removeClass().addClass(msg[0]);
+                        $("#queryNotification").html(msg[1]);
+                        
+                        getQueries();
+                }
+        });
+}
+
+function addTag() {
+        $.ajax({
+                type: "POST",
+                url: "tag_add.php",
+                data: ({tid:$("#tid").val(), tags:$("#tagwords").val()}),
+                success: function(html) {
+                        var msg = html.split(";");
+                        $("#tagNotification").removeClass().addClass(msg[0]);
+                        $("#tagNotification").html(msg[1]);
+                        
+                        getClassify();
+                }
+        });
+}
+
+
+$(document).ready(function() {
+        getComments();
+        getQueries();
+        getClassify();
+        getTutorial();
+        //getCloud();
+});
+
+$(document).everyTime(60000, function(i) {
+        if ($("#tid").val() != "" && $("#tid").val() != null) {
+                $.ajax({
+                        type: "POST",
+                        url: "task_checkcontest.php",
+                        data: ({tid:$("#tid").val()}),
+                        success: function(html) {
+                                if (html == "0") {
+                                        $("#contest_submit").html("");
+                                }
+                        }
+                });
+                $.ajax({
+                        type: "POST",
+                        url: "task_checkcourse.php",
+                        data: ({tid:$("#tid").val()}),
+                        success: function(html) {
+                                if (html == "0") {
+                                        $("#course_submit").html("");
+                                }
+                        }
+                });
+        }
+}, 0);
+
+$('#loading_mask_loader')
+        .hide()  // hide it initially
+        .ajaxStart(function() {
+                $(this).show();
+        })
+        .ajaxStop(function() {
+                $(this).hide();
+        });
+        
+</script>
+</body>
+</html>
+</div> <!-- end outer -->
+
+</div> <!-- end container -->
+
+<!-- START NUS-Footer --> 
+<div id="nusfooter" class="nusbody">
+<div id="nusfooter_ml"><div id="nusfooter_mr">
+<div id="nusfooter_tc"><div id="nusfooter_tl"><div id="nusfooter_tr">
+<div id="nusfooter_bc"><div id="nusfooter_bl"><div id="nusfooter_br">
+<div class="inner"><div class="left"><p>&copy; Copyright 2009-2019 National University of Singapore. All Rights Reserved.</p>  
+<p class="nusfooterlinks">
+<a href="http://www.nus.edu.sg/terms.php">Terms of Use</a> |
+<a href="http://www.nus.edu.sg/policy.php">Privacy</a> |
+<a href="http://www.nus.edu.sg/nondiscrim.php">Non-discrimination</a></p> 
+</div>    
+<div class="right">
+<a href="https://mysoc.nus.edu.sg/">MySoC</a> |
+<a href="https://docs.comp.nus.edu.sg/cf/">Computing Facilities</a> |
+<a href="http://www.nus.edu.sg/search/">Search</a> |
+<a href="http://www.nus.edu.sg/campusmap/">Campus Map</a>
+<p>School of Computing, National University of Singapore</p>
+</div>    
+<div style="clear: both;"> </div>
+</div>
+</div></div></div>
+</div></div></div>
+</div></div>
+</div>
+<!-- END NUS-Footer --></body>
+</html>
